@@ -1,0 +1,6 @@
+angular.module('tapanMeta', [])
+.directive('tapanMeta', function() {
+  return {
+    template: '<title>{{ngMeta.title}}</title><meta property="og:title" content="{{ngMeta.title}}" /><meta property="og:description" content="{{ngMeta.description}}" />}'
+  };
+});
