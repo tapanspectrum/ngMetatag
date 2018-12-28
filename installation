@@ -1,0 +1,12 @@
+Install
+via NPM:
+
+npm install ng-meta --save
+via Bower:
+
+bower install ngMeta --save
+via CDN:
+
+https://cdnjs.cloudflare.com/ajax/libs/ng-meta/1.0.3/ngMeta.min.js
+or download the file from dist.
+
