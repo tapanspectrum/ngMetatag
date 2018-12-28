@@ -1,0 +1,72 @@
+Getting started
+Add ngMeta as a dependency of your module. ngMeta supports ui-router and ngRoute.
+
+angular.module('YourApp',['ngMeta']);
+Add meta objects to your routes (ngRoute) or states (ui-router) and specify the meta tags appropriate to each view. Other than title and titleSuffix, which are reserved properties that affect the title of the page, the tag properties can be named as per your choice.
+
+.config(function ($routeProvider, ngMetaProvider) {
+
+  $routeProvider
+  .when('/home', {
+    templateUrl: 'home-template.html',
+    data: {
+      meta: {
+        'title': 'Home page',
+        'description': 'This is the description shown in Google search results'
+      }
+    }
+  })
+  .when('/login', {
+    templateUrl: 'login-template.html',
+    data: {
+      meta: {
+        'title': 'Login page',
+        'titleSuffix': ' | Login to YourSiteName',
+        'description': 'Login to the site'
+      }
+    }
+  });
+  ...
+});
+[Optional] Set the default values of meta tags during Angular's configuration phase. If the meta object of a route does not contain a specific tag, the default value is used instead.
+
+//Add a suffix to all page titles
+ngMetaProvider.useTitleSuffix(true);
+
+// On /home, the title would change to
+// 'Home Page | Best Website on the Internet!'
+ngMetaProvider.setDefaultTitleSuffix(' | Best Website on the Internet!');
+
+//Set defaults for arbitrary tags
+// Default author name
+ngMetaProvider.setDefaultTag('author', 'John Smith');
+Let ngMeta initialize by calling the init() function in the app.js run block
+
+angular.module('YourApp', ['ngRoute', 'ngMeta'])
+.config(function($routeProvider, ngMetaProvider) {
+  ....
+})
+.run(['ngMeta', function(ngMeta) {
+  ngMeta.init();
+}]);
+Set the meta tags in your HTML file
+
+<title ng-bind="ngMeta.title"></title>
+
+<!-- Arbitrary tags -->
+<meta property="og:type" content="{{ngMeta['og:type']}}" />
+<meta property="og:locale" content="{{ngMeta['og:locale']}}" />
+<meta name="author" content="{{ngMeta['author']}}" />
+<!-- OR <meta name="author" content="{{ngMeta.author}}" /> -->
+<meta name="description" content="{{ngMeta.description}}" />
+Defaults
+Change app-wide behaviour and set default values to tags using these methods of ngMetaProvider. These defaults can be overridden by defining equivalent properties in the route/state meta object
+
+angular.module('YourApp', [....,'ngMeta'])
+.config(function(ngMetaProvider) {
+
+	ngMetaProvider.useTitleSuffix(true);
+    ngMetaProvider.setDefaultTitle('Fallback Title');
+    ngMetaProvider.setDefaultTitleSuffix(' | YourSite');
+    ngMetaProvider.setDefaultTag('author', 'John Smith');
+});
